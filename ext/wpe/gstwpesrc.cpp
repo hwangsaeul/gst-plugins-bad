@@ -780,8 +780,20 @@ gst_wpe_src_class_init (GstWpeSrcClass * klass)
    */
   gst_wpe_src_signals[SIGNAL_CONFIGURE_WEB_VIEW] =
       g_signal_new ("configure-web-view", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 1, G_TYPE_OBJECT);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_OBJECT);
+
+  /**
+   * GstWpeSrc::load-bytes:
+   * @src: the object which received the signal
+   * @bytes: the GBytes data to load
+   *
+   * Load the specified bytes into the internal webView.
+   */
+  gst_wpe_src_signals[SIGNAL_LOAD_BYTES] =
+      g_signal_new_class_handler ("load-bytes", G_TYPE_FROM_CLASS (klass),
+      static_cast < GSignalFlags > (G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+      G_CALLBACK (gst_wpe_src_load_bytes), NULL, NULL, NULL,
+      G_TYPE_NONE, 1, G_TYPE_BYTES);
 }
 
 static gboolean

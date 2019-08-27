@@ -5061,9 +5061,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[CREATE_OFFER_SIGNAL] =
       g_signal_new_class_handler ("create-offer", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_create_offer), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 2, GST_TYPE_STRUCTURE,
-      GST_TYPE_PROMISE);
+      G_CALLBACK (gst_webrtc_bin_create_offer), NULL, NULL, NULL,
+      G_TYPE_NONE, 2, GST_TYPE_STRUCTURE, GST_TYPE_PROMISE);
 
   /**
    * GstWebRTCBin::create-answer:
@@ -5074,9 +5073,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[CREATE_ANSWER_SIGNAL] =
       g_signal_new_class_handler ("create-answer", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_create_answer), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 2, GST_TYPE_STRUCTURE,
-      GST_TYPE_PROMISE);
+      G_CALLBACK (gst_webrtc_bin_create_answer), NULL, NULL, NULL,
+      G_TYPE_NONE, 2, GST_TYPE_STRUCTURE, GST_TYPE_PROMISE);
 
   /**
    * GstWebRTCBin::set-local-description:
@@ -5087,9 +5085,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[SET_LOCAL_DESCRIPTION_SIGNAL] =
       g_signal_new_class_handler ("set-local-description",
       G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_set_local_description), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 2,
-      GST_TYPE_WEBRTC_SESSION_DESCRIPTION, GST_TYPE_PROMISE);
+      G_CALLBACK (gst_webrtc_bin_set_local_description), NULL, NULL, NULL,
+      G_TYPE_NONE, 2, GST_TYPE_WEBRTC_SESSION_DESCRIPTION, GST_TYPE_PROMISE);
 
   /**
    * GstWebRTCBin::set-remote-description:
@@ -5100,9 +5097,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[SET_REMOTE_DESCRIPTION_SIGNAL] =
       g_signal_new_class_handler ("set-remote-description",
       G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_set_remote_description), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 2,
-      GST_TYPE_WEBRTC_SESSION_DESCRIPTION, GST_TYPE_PROMISE);
+      G_CALLBACK (gst_webrtc_bin_set_remote_description), NULL, NULL, NULL,
+      G_TYPE_NONE, 2, GST_TYPE_WEBRTC_SESSION_DESCRIPTION, GST_TYPE_PROMISE);
 
   /**
    * GstWebRTCBin::add-ice-candidate:
@@ -5113,8 +5109,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[ADD_ICE_CANDIDATE_SIGNAL] =
       g_signal_new_class_handler ("add-ice-candidate",
       G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_add_ice_candidate), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_STRING);
+      G_CALLBACK (gst_webrtc_bin_add_ice_candidate), NULL, NULL, NULL,
+      G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_STRING);
 
   /**
    * GstWebRTCBin::get-stats:
@@ -5189,9 +5185,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[GET_STATS_SIGNAL] =
       g_signal_new_class_handler ("get-stats",
       G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_get_stats), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 2, GST_TYPE_PAD,
-      GST_TYPE_PROMISE);
+      G_CALLBACK (gst_webrtc_bin_get_stats), NULL, NULL, NULL,
+      G_TYPE_NONE, 2, GST_TYPE_PAD, GST_TYPE_PROMISE);
 
   /**
    * GstWebRTCBin::on-negotiation-needed:
@@ -5199,8 +5194,7 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
    */
   gst_webrtc_bin_signals[ON_NEGOTIATION_NEEDED_SIGNAL] =
       g_signal_new ("on-negotiation-needed", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 0);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   /**
    * GstWebRTCBin::on-ice-candidate:
@@ -5210,7 +5204,7 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
    */
   gst_webrtc_bin_signals[ON_ICE_CANDIDATE_SIGNAL] =
       g_signal_new ("on-ice-candidate", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
       G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_STRING);
 
   /**
@@ -5220,7 +5214,7 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
    */
   gst_webrtc_bin_signals[ON_NEW_TRANSCEIVER_SIGNAL] =
       g_signal_new ("on-new-transceiver", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
       G_TYPE_NONE, 1, GST_TYPE_WEBRTC_RTP_TRANSCEIVER);
 
   /**
@@ -5230,7 +5224,7 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
    */
   gst_webrtc_bin_signals[ON_DATA_CHANNEL_SIGNAL] =
       g_signal_new ("on-data-channel", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
       G_TYPE_NONE, 1, GST_TYPE_WEBRTC_DATA_CHANNEL);
 
   /**
@@ -5245,7 +5239,7 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
       g_signal_new_class_handler ("add-transceiver", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_CALLBACK (gst_webrtc_bin_add_transceiver), NULL, NULL,
-      g_cclosure_marshal_generic, GST_TYPE_WEBRTC_RTP_TRANSCEIVER, 2,
+      NULL, GST_TYPE_WEBRTC_RTP_TRANSCEIVER, 2,
       GST_TYPE_WEBRTC_RTP_TRANSCEIVER_DIRECTION, GST_TYPE_CAPS);
 
   /**
@@ -5257,8 +5251,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[GET_TRANSCEIVERS_SIGNAL] =
       g_signal_new_class_handler ("get-transceivers", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_get_transceivers), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_ARRAY, 0);
+      G_CALLBACK (gst_webrtc_bin_get_transceivers), NULL, NULL, NULL,
+      G_TYPE_ARRAY, 0);
 
   /**
    * GstWebRTCBin::get-transceiver:
@@ -5271,9 +5265,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[GET_TRANSCEIVER_SIGNAL] =
       g_signal_new_class_handler ("get-transceiver", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_get_transceiver), NULL, NULL,
-      g_cclosure_marshal_generic, GST_TYPE_WEBRTC_RTP_TRANSCEIVER, 1,
-      G_TYPE_INT);
+      G_CALLBACK (gst_webrtc_bin_get_transceiver), NULL, NULL, NULL,
+      GST_TYPE_WEBRTC_RTP_TRANSCEIVER, 1, G_TYPE_INT);
 
   /**
    * GstWebRTCBin::add-turn-server:
@@ -5285,8 +5278,8 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
   gst_webrtc_bin_signals[ADD_TURN_SERVER_SIGNAL] =
       g_signal_new_class_handler ("add-turn-server", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_bin_add_turn_server), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_BOOLEAN, 1, G_TYPE_STRING);
+      G_CALLBACK (gst_webrtc_bin_add_turn_server), NULL, NULL, NULL,
+      G_TYPE_BOOLEAN, 1, G_TYPE_STRING);
 
   /*
    * GstWebRTCBin::create-data-channel:
@@ -5312,8 +5305,7 @@ gst_webrtc_bin_class_init (GstWebRTCBinClass * klass)
       g_signal_new_class_handler ("create-data-channel",
       G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
       G_CALLBACK (gst_webrtc_bin_create_data_channel), NULL, NULL,
-      g_cclosure_marshal_generic, GST_TYPE_WEBRTC_DATA_CHANNEL, 2,
-      G_TYPE_STRING, GST_TYPE_STRUCTURE);
+      NULL, GST_TYPE_WEBRTC_DATA_CHANNEL, 2, G_TYPE_STRING, GST_TYPE_STRUCTURE);
 }
 
 static void

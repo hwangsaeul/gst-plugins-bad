@@ -1231,8 +1231,7 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
    */
   gst_webrtc_data_channel_signals[SIGNAL_ON_OPEN] =
       g_signal_new ("on-open", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 0);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   /**
    * GstWebRTCDataChannel::on-close:
@@ -1240,8 +1239,7 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
    */
   gst_webrtc_data_channel_signals[SIGNAL_ON_CLOSE] =
       g_signal_new ("on-close", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 0);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   /**
    * GstWebRTCDataChannel::on-error:
@@ -1250,8 +1248,7 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
    */
   gst_webrtc_data_channel_signals[SIGNAL_ON_ERROR] =
       g_signal_new ("on-error", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 1, G_TYPE_ERROR);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_ERROR);
 
   /**
    * GstWebRTCDataChannel::on-message-data:
@@ -1260,8 +1257,7 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
    */
   gst_webrtc_data_channel_signals[SIGNAL_ON_MESSAGE_DATA] =
       g_signal_new ("on-message-data", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 1, G_TYPE_BYTES);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_BYTES);
 
   /**
    * GstWebRTCDataChannel::on-message-string:
@@ -1270,8 +1266,7 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
    */
   gst_webrtc_data_channel_signals[SIGNAL_ON_MESSAGE_STRING] =
       g_signal_new ("on-message-string", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 1, G_TYPE_STRING);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_STRING);
 
   /**
    * GstWebRTCDataChannel::on-buffered-amount-low:
@@ -1279,8 +1274,7 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
    */
   gst_webrtc_data_channel_signals[SIGNAL_ON_BUFFERED_AMOUNT_LOW] =
       g_signal_new ("on-buffered-amount-low", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_generic,
-      G_TYPE_NONE, 0);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   /**
    * GstWebRTCDataChannel::send-data:
@@ -1290,8 +1284,8 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
   gst_webrtc_data_channel_signals[SIGNAL_SEND_DATA] =
       g_signal_new_class_handler ("send-data", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_data_channel_send_data), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 1, G_TYPE_BYTES);
+      G_CALLBACK (gst_webrtc_data_channel_send_data), NULL, NULL, NULL,
+      G_TYPE_NONE, 1, G_TYPE_BYTES);
 
   /**
    * GstWebRTCDataChannel::send-string:
@@ -1301,8 +1295,8 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
   gst_webrtc_data_channel_signals[SIGNAL_SEND_STRING] =
       g_signal_new_class_handler ("send-string", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_data_channel_send_string), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 1, G_TYPE_STRING);
+      G_CALLBACK (gst_webrtc_data_channel_send_string), NULL, NULL, NULL,
+      G_TYPE_NONE, 1, G_TYPE_STRING);
 
   /**
    * GstWebRTCDataChannel::close:
@@ -1313,8 +1307,8 @@ gst_webrtc_data_channel_class_init (GstWebRTCDataChannelClass * klass)
   gst_webrtc_data_channel_signals[SIGNAL_CLOSE] =
       g_signal_new_class_handler ("close", G_TYPE_FROM_CLASS (klass),
       G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-      G_CALLBACK (gst_webrtc_data_channel_close), NULL, NULL,
-      g_cclosure_marshal_generic, G_TYPE_NONE, 0);
+      G_CALLBACK (gst_webrtc_data_channel_close), NULL, NULL, NULL,
+      G_TYPE_NONE, 0);
 }
 
 static void
