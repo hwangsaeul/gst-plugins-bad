@@ -1113,8 +1113,8 @@ gst_srt_object_wait_caller (GstSRTObject * srtobject,
 }
 
 gssize
-gst_srt_object_read (GstSRTObject * srtobject,
-    guint8 * data, gsize size, GCancellable * cancellable, GError ** error)
+gst_srt_object_read (GstSRTObject * srtobject, guint8 * data, gsize size,
+    guint64 * srctime, GCancellable * cancellable, GError ** error)
 {
   gssize len = 0;
   gint poll_timeout;
@@ -1153,6 +1153,7 @@ gst_srt_object_read (GstSRTObject * srtobject,
   while (!g_cancellable_is_cancelled (cancellable)) {
 
     SRTSOCKET rsock;
+    SRT_MSGCTRL ctrl = { 0 };
     gint rsocklen = 1;
     int pollret;
 
@@ -1198,7 +1199,9 @@ gst_srt_object_read (GstSRTObject * srtobject,
     }
 
 
-    len = srt_recvmsg (rsock, (char *) (data), size);
+    len = srt_recvmsg2 (rsock, (char *) (data), size, &ctrl);
+
+    *srctime = ctrl.srctime;
     break;
   }
 
