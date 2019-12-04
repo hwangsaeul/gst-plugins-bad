@@ -170,6 +170,8 @@ gst_wasapi_device_role_to_erole (gint role)
     default:
       g_assert_not_reached ();
   }
+
+  return -1;
 }
 
 gint
@@ -185,6 +187,8 @@ gst_wasapi_erole_to_device_role (gint erole)
     default:
       g_assert_not_reached ();
   }
+
+  return -1;
 }
 
 static const gchar *
@@ -313,7 +317,7 @@ gst_wasapi_util_hresult_to_string (HRESULT hr)
 }
 
 static IMMDeviceEnumerator *
-gst_wasapi_util_get_device_enumerator (GstElement * self)
+gst_wasapi_util_get_device_enumerator (GstObject * self)
 {
   HRESULT hr;
   IMMDeviceEnumerator *enumerator = NULL;
@@ -326,7 +330,7 @@ gst_wasapi_util_get_device_enumerator (GstElement * self)
 }
 
 gboolean
-gst_wasapi_util_get_devices (GstElement * self, gboolean active,
+gst_wasapi_util_get_devices (GstObject * self, gboolean active,
     GList ** devices)
 {
   gboolean res = FALSE;
@@ -550,7 +554,7 @@ gst_wasapi_util_get_device_client (GstElement * self,
   IMMDevice *device = NULL;
   IAudioClient *client = NULL;
 
-  if (!(enumerator = gst_wasapi_util_get_device_enumerator (self)))
+  if (!(enumerator = gst_wasapi_util_get_device_enumerator (GST_OBJECT (self))))
     goto beach;
 
   if (!device_strid) {
@@ -915,7 +919,9 @@ gst_wasapi_util_initialize_audioclient (GstElement * self,
 
     *ret_devicep_frames = n_frames;
   } else {
-    *ret_devicep_frames = (rate * device_period * 100) / GST_SECOND;
+    /* device_period can be a non-power-of-10 value so round while converting */
+    *ret_devicep_frames =
+        gst_util_uint64_scale_round (device_period, rate * 100, GST_SECOND);
   }
 
   return TRUE;

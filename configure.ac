@@ -3,7 +3,7 @@ AC_PREREQ([2.69])
 dnl initialize autoconf
 dnl when going to/from release please set the nano (fourth number) right !
 dnl releases only do Wall, git and prerelease does Werror too
-AC_INIT([GStreamer Bad Plug-ins],[1.16.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-bad])
+AC_INIT([GStreamer Bad Plug-ins],[1.16.2],[http://bugzilla.gnome.org/enter_bug.cgi?product=GStreamer],[gst-plugins-bad])
 
 AG_GST_INIT
 
@@ -51,11 +51,11 @@ dnl - interfaces added/removed/changed -> increment CURRENT, REVISION = 0
 dnl - interfaces added -> increment AGE
 dnl - interfaces removed -> AGE = 0
 dnl sets GST_LT_LDFLAGS
-AS_LIBTOOL(GST, 1601, 0, 1601)
+AS_LIBTOOL(GST, 1602, 0, 1602)
 
 dnl *** required versions of GStreamer stuff ***
-GST_REQ=1.16.1
-GSTPB_REQ=1.16.1
+GST_REQ=1.16.2
+GSTPB_REQ=1.16.2
 
 dnl *** autotools stuff ****
 
@@ -1896,6 +1896,15 @@ dnl *** OpenEXR ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_OPENEXR, true)
 AG_GST_CHECK_FEATURE(OPENEXR, [openexr library], openexr, [
   AG_GST_PKG_CHECK_MODULES(OPENEXR, OpenEXR)
+  if test "x$HAVE_OPENEXR" = "xyes"; then
+    AG_GST_PKG_CHECK_MODULES(OPENEXR240, OpenEXR >= 2.4.0)
+    if test "x$HAVE_OPENEXR240" = "xyes"; then
+      OPENEXR_STDCFLAGS=
+    else
+      OPENEXR_STDCFLAGS="-std=c++98"
+    fi
+    AC_SUBST([OPENEXR_STDCFLAGS])
+  fi
 ])
 
 dnl *** openh264 ***
