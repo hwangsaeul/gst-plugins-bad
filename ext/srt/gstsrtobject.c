@@ -1021,7 +1021,9 @@ gst_srt_object_open_full (GstSRTObject * srtobject,
     connection_mode = GST_TYPE_SRT_CONNECTION_MODE;
   }
 
-  srtobject->listener_poll_id = srt_epoll_create ();
+  if (srtobject->listener_poll_id == SRT_ERROR) {
+    srtobject->listener_poll_id = srt_epoll_create ();
+  }
 
   srtobject->opened =
       gst_srt_object_open_connection
