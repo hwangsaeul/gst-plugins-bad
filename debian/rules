@@ -26,6 +26,9 @@ DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS 2>/dev/null)
 ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes) $(DEB_HOST_ARCH), yes i386)
 DEB_DH_BUILDDEB_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
 DEB_DH_GENCONTROL_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
+DEB_DH_INSTALL_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
+else
+opencv = debian/tmp/usr/share/gst-plugins-bad/$(gst_abi)/
 endif
 
 # Take account of old dpkg-architecture output.
@@ -134,6 +137,7 @@ pre-build::
 		sed \
 			-e 's,@dvb@,$(dvb),g' \
 			-e 's,@decklink@,$(decklink),g' \
+			-e 's,@opencv@,$(opencv),g' \
 			-e 's,@linsys@,$(linsys),g' \
 			-e 's,@fbdev@,$(fbdev),g' \
 			-e 's,@dc1394@,$(dc1394),g' \

@@ -1,3 +1,9 @@
+gst-plugins-bad1.0 (1.16.1-1ubuntu8) focal; urgency=medium
+
+  * Fix build failure on i386.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 11 Dec 2019 11:50:41 -0800
+
 gst-plugins-bad1.0 (1.16.1-1ubuntu7) focal; urgency=medium
 
   * Don't build the opencv binary packages on i386, avoiding a large tree
