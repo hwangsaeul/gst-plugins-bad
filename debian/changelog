@@ -1,3 +1,33 @@
+gst-plugins-bad1.0 (1.16.1-1ubuntu6) focal; urgency=medium
+
+  * No-change rebuild against libilmbase24 and libopenexr24.
+
+ -- Rik Mills <rikmills@kde.org>  Tue, 03 Dec 2019 08:07:23 +0000
+
+gst-plugins-bad1.0 (1.16.1-1ubuntu5) focal; urgency=medium
+
+  * Rebuild with the new libdvdread soname
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Thu, 28 Nov 2019 10:43:47 +0100
+
+gst-plugins-bad1.0 (1.16.1-1ubuntu4) focal; urgency=medium
+
+  * No-change rebuild against libopencv-imgcodecs4.1
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sat, 23 Nov 2019 20:43:43 +0000
+
+gst-plugins-bad1.0 (1.16.1-1ubuntu3) focal; urgency=medium
+
+  * Build with -std=c++11, now required for compatibility with openexr.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 03 Nov 2019 19:01:29 +0000
+
+gst-plugins-bad1.0 (1.16.1-1ubuntu2) focal; urgency=medium
+
+  * No-change rebuild against libx265-179
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 31 Oct 2019 04:49:18 +0000
+
 gst-plugins-bad1.0 (1.16.1-1ubuntu1) eoan; urgency=medium
 
   * Merge from Debian unstable.  Remaining changes:
