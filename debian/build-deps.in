@@ -68,7 +68,7 @@ nettle-dev
 libbs2b-dev
 libde265-dev
 libx265-dev
-libopencv-dev (>= 3.0.0)
+libopencv-dev (>= 3.0.0) [!i386]
 libgirepository1.0-dev (>= 0.9.12-4~)
 gobject-introspection (>= 0.9.12-4~)
 gir1.2-glib-2.0

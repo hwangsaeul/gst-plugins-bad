@@ -23,6 +23,11 @@ DEB_MAKE_CHECK_TARGET = check || true
 DEB_HOST_ARCH_CPU := $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU 2>/dev/null)
 DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS 2>/dev/null)
 
+ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes) $(DEB_HOST_ARCH), yes i386)
+DEB_DH_BUILDDEB_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
+DEB_DH_GENCONTROL_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
+endif
+
 # Take account of old dpkg-architecture output.
 ifeq ($(DEB_HOST_ARCH_CPU),)
   DEB_HOST_ARCH_CPU := $(shell dpkg-architecture -qDEB_HOST_GNU_CPU)
