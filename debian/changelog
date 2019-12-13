@@ -1,48 +1,4 @@
-gst-plugins-bad1.0 (1.16.1-1ubuntu8) focal; urgency=medium
-
-  * Fix build failure on i386.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 11 Dec 2019 11:50:41 -0800
-
-gst-plugins-bad1.0 (1.16.1-1ubuntu7) focal; urgency=medium
-
-  * Don't build the opencv binary packages on i386, avoiding a large tree
-    of numeric-related dependencies for a binary package it's not required
-    to support.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 10 Dec 2019 23:44:39 -0800
-
-gst-plugins-bad1.0 (1.16.1-1ubuntu6) focal; urgency=medium
-
-  * No-change rebuild against libilmbase24 and libopenexr24.
-
- -- Rik Mills <rikmills@kde.org>  Tue, 03 Dec 2019 08:07:23 +0000
-
-gst-plugins-bad1.0 (1.16.1-1ubuntu5) focal; urgency=medium
-
-  * Rebuild with the new libdvdread soname
-
- -- Sebastien Bacher <seb128@ubuntu.com>  Thu, 28 Nov 2019 10:43:47 +0100
-
-gst-plugins-bad1.0 (1.16.1-1ubuntu4) focal; urgency=medium
-
-  * No-change rebuild against libopencv-imgcodecs4.1
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Sat, 23 Nov 2019 20:43:43 +0000
-
-gst-plugins-bad1.0 (1.16.1-1ubuntu3) focal; urgency=medium
-
-  * Build with -std=c++11, now required for compatibility with openexr.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 03 Nov 2019 19:01:29 +0000
-
-gst-plugins-bad1.0 (1.16.1-1ubuntu2) focal; urgency=medium
-
-  * No-change rebuild against libx265-179
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Thu, 31 Oct 2019 04:49:18 +0000
-
-gst-plugins-bad1.0 (1.16.1-1ubuntu1) eoan; urgency=medium
+gst-plugins-bad1.0 (1.16.2-1ubuntu1) UNRELEASED; urgency=medium
 
   * Merge from Debian unstable.  Remaining changes:
     + Stop installing camerabin2 basecamerabin jpegformat - plugins which have
@@ -51,8 +7,26 @@ gst-plugins-bad1.0 (1.16.1-1ubuntu1) eoan; urgency=medium
       gstreamer-plugins-good-1.0 - the package we've moved the referenced
       library to. This maintains compatibility with upstream software and
       other distributions.
+    + Don't build the opencv binary packages on i386, avoiding a large tree
+      of numeric-related dependencies for a binary package it's not required
+      to support.
+  * Removed Ubuntu changes:
+    + Don't hack debian/rules to build with -std=c++11 the openexr issue
+      has been fixed in the new upstream version
 
  -- Sebastien Bacher <seb128@ubuntu.com>  Thu, 26 Sep 2019 13:38:01 +0200
+
+gst-plugins-bad1.0 (1.16.2-2) unstable; urgency=medium
+
+  * Source-only re-upload.
+
+ -- Sebastian Dröge <slomo@debian.org>  Mon, 09 Dec 2019 12:03:37 +0200
+
+gst-plugins-bad1.0 (1.16.2-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Sebastian Dröge <slomo@debian.org>  Wed, 04 Dec 2019 15:33:40 +0200
 
 gst-plugins-bad1.0 (1.16.1-1) unstable; urgency=medium
 
