@@ -23,14 +23,6 @@ DEB_MAKE_CHECK_TARGET = check || true
 DEB_HOST_ARCH_CPU := $(shell dpkg-architecture -qDEB_HOST_ARCH_CPU 2>/dev/null)
 DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS 2>/dev/null)
 
-ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes) $(DEB_HOST_ARCH), yes i386)
-DEB_DH_BUILDDEB_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
-DEB_DH_GENCONTROL_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
-DEB_DH_INSTALL_ARGS = -Ngstreamer1.0-opencv -Nlibgstreamer-opencv1.0-0
-else
-opencv = debian/tmp/usr/share/gst-plugins-bad/$(gst_abi)/
-endif
-
 # Take account of old dpkg-architecture output.
 ifeq ($(DEB_HOST_ARCH_CPU),)
   DEB_HOST_ARCH_CPU := $(shell dpkg-architecture -qDEB_HOST_GNU_CPU)
@@ -76,7 +68,7 @@ gst_extra_build_depends += , wayland-protocols (>= 1.4) [linux-any]
 gst_extra_build_depends += , libvulkan-dev [linux-any]
 gst_extra_build_depends += , libsrt-dev [linux-any]
 
-PLUGINS += plugins-bad opencv
+PLUGINS += plugins-bad
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 PLUGINS +=
 endif
@@ -163,9 +155,6 @@ pre-build::
 	sed -e 's/@GST_ABI@/$(gst_abi)/g' -e 's,@wayland@,$(wayland),g' \
 			debian/libgstreamer-plugins-bad.install \
 			> debian/libgstreamer-plugins-bad$(gst_deb_abi).install
-	sed -e 's/@GST_ABI@/$(gst_abi)/g' \
-			debian/libgstreamer-opencv.install \
-			> debian/libgstreamer-opencv$(gst_deb_abi).install
 	sed 's/@GST_ABI@/$(gst_abi)/g' debian/libgstreamer-plugins-bad-dev.install \
 			> debian/libgstreamer-plugins-bad$(gst_abi)-dev.install
 	cp debian/gir1.2-gst-plugins-bad.install \
@@ -197,7 +186,7 @@ DEB_CONFIGURE_EXTRA_FLAGS += \
 	--enable-debug \
 	--with-package-name=$(GST_PACKAGE_NAME) \
 	--with-package-origin=$(GST_PACKAGE_ORIGIN) \
-	--disable-pvr
+	--disable-pvr --disable-openexr
 
 # Only build documentation if we are building the -doc package
 ifneq ($(filter $(gst_pkgname)-doc,$(binaries)),)
@@ -210,7 +199,7 @@ common-binary-fixup-arch::
 		$(CURDIR)/debian/libgstreamer-plugins-bad$(gst_abi)-dev/usr/lib/*/libgstbasecamerabinsrc* \
 		$(CURDIR)/debian/libgstreamer-plugins-bad$(gst_abi)-dev/usr/lib/*/libgstphotography*
 	LD_LIBRARY_PATH=debian/libgstreamer-plugins-bad1.0-0/usr/lib/$(DEB_HOST_MULTIARCH):$(LD_LIBRARY_PATH) \
-	LD_LIBRARY_PATH=debian/libgstreamer-plugins-bad1.0-0/usr/lib/$(DEB_HOST_MULTIARCH):debian/libgstreamer-opencv1.0-0/usr/lib/$(DEB_HOST_MULTIARCH):$(LD_LIBRARY_PATH) \
+	LD_LIBRARY_PATH=debian/libgstreamer-plugins-bad1.0-0/usr/lib/$(DEB_HOST_MULTIARCH):$(LD_LIBRARY_PATH) \
 		dh_gstscancodecs
 
 clean::
@@ -227,7 +216,6 @@ gst_patch = $(shell echo $(gst_version) | cut -d '.' -f 2)
 gst_patch_next = $(shell expr $(gst_patch) + 1)
 gst_version_next = $(shell echo $(gst_version) | cut -d '.' -f-1).$(gst_patch_next)
 DEB_DH_MAKESHLIBS_ARGS_libgstreamer-plugins-bad$(gst_deb_abi) += -V "libgstreamer-plugins-bad$(gst_deb_abi) (>= $(gst_version)), libgstreamer-plugins-bad$(gst_deb_abi) (<< $(gst_version_next))"
-DEB_DH_MAKESHLIBS_ARGS_libgstreamer-opencv$(gst_deb_abi) += -V "libgstreamer-opencv$(gst_deb_abi) (>= $(gst_version)), libgstreamer-opencv$(gst_deb_abi) (<< $(gst_version_next))"
 DEB_INSTALL_DOCS_ALL += debian/README.Debian NEWS
 
 # Disable inclusion of large upstream ChangeLog

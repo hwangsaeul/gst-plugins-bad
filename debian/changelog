@@ -1,4 +1,10 @@
-gst-plugins-bad1.0 (1.16.2-1ubuntu1) UNRELEASED; urgency=medium
+gst-plugins-bad1.0 (1.16.2-2.1ubuntu3-2h8l1) UNRELEASED; urgency=medium
+
+  * Disabled OpenCV and OpenEXR (to prevent build failure)
+
+ --  Justin Kim <jeongseok.kim@sk.com>  Sat, 15 Aug 2020 12:17:03 +0000
+
+gst-plugins-bad1.0 (1.16.2-1ubuntu1) focal; urgency=medium
 
   * Merge from Debian unstable.  Remaining changes:
     + Stop installing camerabin2 basecamerabin jpegformat - plugins which have

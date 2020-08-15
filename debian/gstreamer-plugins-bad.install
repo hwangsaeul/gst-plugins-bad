@@ -67,7 +67,6 @@ debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstmxf.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstnetsim.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstofa.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstopenal.so
-debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstopenexr.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstopenjpeg.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstopenmpt.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstopusparse.so
@@ -113,7 +112,6 @@ debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgsty4mdec.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstyadif.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstzbar.so
 debian/tmp/usr/share/locale
-@opencv@
 debian/tmp/usr/share/gstreamer-@GST_ABI@/presets/
 @dvb@
 @resindvd@
