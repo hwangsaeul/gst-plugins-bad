@@ -1538,6 +1538,9 @@ gst_srt_object_write_one (GstSRTObject * srtobject,
         if (!gst_srt_object_open_internal (srtobject, cancellable, error)) {
           return -1;
         }
+        /* We can't send into a broken SRT socket. This will drop the current
+         * buffer. */
+        return 0;
         continue;
       case SRTS_CONNECTED:
         /* good to go */
