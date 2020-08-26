@@ -812,6 +812,8 @@ thread_func (gpointer data)
       if (gst_uri_handler_get_uri_type (GST_URI_HANDLER (srtobject->element)) ==
           GST_URI_SRC)
         return NULL;
+    } else {
+      g_signal_emit_by_name (srtobject->element, "caller-rejected");
     }
   }
 }
