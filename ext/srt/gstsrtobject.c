@@ -119,7 +119,7 @@ static struct srt_constant_params srt_params[] = {
   {"SRTO_SNDSYN", SRTO_SNDSYN, 0},      /* 0: non-blocking */
   {"SRTO_RCVSYN", SRTO_RCVSYN, 0},      /* 0: non-blocking */
   {"SRTO_LINGER", SRTO_LINGER, 0},
-  {"SRTO_TSBPMODE", SRTO_TSBPDMODE, 1}, /* Timestamp-based Packet Delivery mode must be enabled */
+  {"SRTO_TSBPDMODE", SRTO_TSBPDMODE, 1},        /* Timestamp-based Packet Delivery mode must be enabled */
   {NULL, -1, -1},
 };
 
