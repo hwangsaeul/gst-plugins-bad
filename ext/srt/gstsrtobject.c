@@ -1304,12 +1304,20 @@ gst_srt_object_read (GstSRTObject * srtobject,
     if (wsocklen == 1 && rsocklen == 1 && rsock == wsock) {
       /* Socket reported in wsock AND rsock signifies an error. */
       gint reason = srt_getrejectreason (wsock);
+      gboolean is_auth_error = (reason == SRT_REJ_BADSECRET
+          || reason == SRT_REJ_UNSECURE);
+
+      if (is_auth_error) {
+        ELEMENT_WARNING_SRT_REJECT (NOT_AUTHORIZED, reason);
+      }
 
       if (connection_mode == GST_SRT_CONNECTION_MODE_LISTENER) {
         /* Caller has disappeared. */
         return 0;
       } else {
-        ELEMENT_WARNING_SRT_REJECT (READ, reason);
+        if (!is_auth_error) {
+          ELEMENT_WARNING_SRT_REJECT (READ, reason);
+        }
 
         gst_srt_object_close (srtobject);
         if (!gst_srt_object_open_internal (srtobject, cancellable, error)) {
@@ -1520,7 +1528,11 @@ gst_srt_object_write_one (GstSRTObject * srtobject,
       /* Socket reported in wsock AND rsock signifies an error. */
       gint reason = srt_getrejectreason (wsock);
 
-      ELEMENT_WARNING_SRT_REJECT (WRITE, reason);
+      if (reason == SRT_REJ_BADSECRET || reason == SRT_REJ_UNSECURE) {
+        ELEMENT_WARNING_SRT_REJECT (NOT_AUTHORIZED, reason);
+      } else {
+        ELEMENT_WARNING_SRT_REJECT (WRITE, reason);
+      }
 
       gst_srt_object_close (srtobject);
       if (!gst_srt_object_open_internal (srtobject, cancellable, error)) {
