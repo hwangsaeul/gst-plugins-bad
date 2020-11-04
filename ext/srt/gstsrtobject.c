@@ -1606,7 +1606,8 @@ gst_srt_object_write (GstSRTObject * srtobject,
 static GstStructure *
 get_stats_for_srtsock (SRTSOCKET srtsock, gboolean is_sender, guint64 * bytes)
 {
-  GstStructure *s = gst_structure_new_empty ("application/x-srt-statistics");
+  GstStructure *s = gst_structure_new ("application/x-srt-statistics",
+      "socket", G_TYPE_INT, srtsock, NULL);
   int ret;
   SRT_TRACEBSTATS stats;
 
