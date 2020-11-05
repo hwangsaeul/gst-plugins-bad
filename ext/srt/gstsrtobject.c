@@ -54,6 +54,7 @@ enum
   PROP_STATS,
   PROP_WAIT_FOR_CONNECTION,
   PROP_STREAMID,
+  PROP_BUFFER_SIZE,
   PROP_LAST
 };
 
@@ -253,6 +254,22 @@ gst_srt_object_set_common_params (SRTSOCKET sock, GstSRTObject * srtobject,
     }
   }
 
+  if (gst_structure_has_field (srtobject->parameters, "buffer-size")) {
+    gint32 buffer_size;
+
+    gst_structure_get_int (srtobject->parameters, "buffer-size", &buffer_size);
+
+    if (buffer_size > 0) {
+      gboolean is_sender = GST_IS_BASE_SINK (srtobject->element);
+      SRT_SOCKOPT opt = is_sender ? SRTO_SNDBUF : SRTO_RCVBUF;
+
+      if (srt_setsockopt (sock, 0, opt, &buffer_size, sizeof (gint32))) {
+        g_set_error (error, GST_LIBRARY_ERROR, GST_LIBRARY_ERROR_SETTINGS,
+            "failed to set buffer size (reason: %s)", srt_getlasterror_str ());
+      }
+    }
+  }
+
   GST_OBJECT_UNLOCK (srtobject->element);
   return TRUE;
 
@@ -352,6 +369,9 @@ gst_srt_object_set_property_helper (GstSRTObject * srtobject,
     case PROP_STREAMID:
       gst_structure_set_value (srtobject->parameters, "streamid", value);
       break;
+    case PROP_BUFFER_SIZE:
+      gst_structure_set_value (srtobject->parameters, "buffer-size", value);
+      break;
     default:
       goto err;
   }
@@ -434,6 +454,15 @@ gst_srt_object_get_property_helper (GstSRTObject * srtobject,
     case PROP_STREAMID:{
       g_value_set_string (value,
           gst_structure_get_string (srtobject->parameters, "streamid"));
+      break;
+    }
+    case PROP_BUFFER_SIZE:{
+      gint v;
+      if (!gst_structure_get_int (srtobject->parameters, "buffer-size", &v)) {
+        GST_WARNING_OBJECT (srtobject->element, "Failed to get 'buffer-size'");
+        v = 0;
+      }
+      g_value_set_int (value, v);
       break;
     }
     default:
@@ -583,6 +612,16 @@ gst_srt_object_install_properties_helper (GObjectClass * gobject_class)
           "Stream ID for the SRT access control", "",
           G_PARAM_READWRITE | GST_PARAM_MUTABLE_READY |
           G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GstSRTSrc:buffer-size:
+   *
+   * Receive/send buffer size in bytes.
+   */
+  g_object_class_install_property (gobject_class, PROP_BUFFER_SIZE,
+      g_param_spec_int ("buffer-size", "Buffer size",
+          "Receive/send buffer size in bytes (0 = library default)",
+          0, G_MAXINT32, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
