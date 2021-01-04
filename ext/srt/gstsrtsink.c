@@ -58,7 +58,7 @@ enum
   SIG_CALLER_ADDED,
   SIG_CALLER_REMOVED,
   SIG_CALLER_REJECTED,
-
+  SIG_CALLER_CONNECTING,
   LAST_SIGNAL
 };
 
@@ -69,12 +69,35 @@ static void gst_srt_sink_uri_handler_init (gpointer g_iface,
 static gchar *gst_srt_sink_uri_get_uri (GstURIHandler * handler);
 static gboolean gst_srt_sink_uri_set_uri (GstURIHandler * handler,
     const gchar * uri, GError ** error);
+static gboolean default_caller_connecting (GstSRTSink * self,
+    GSocketAddress * addr, const gchar * username, gpointer data);
+static gboolean authentication_accumulator (GSignalInvocationHint * ihint,
+    GValue * return_accu, const GValue * handler_return, gpointer data);
 
 #define gst_srt_sink_parent_class parent_class
 G_DEFINE_TYPE_WITH_CODE (GstSRTSink, gst_srt_sink,
     GST_TYPE_BASE_SINK,
     G_IMPLEMENT_INTERFACE (GST_TYPE_URI_HANDLER, gst_srt_sink_uri_handler_init)
     GST_DEBUG_CATEGORY_INIT (GST_CAT_DEFAULT, "srtsink", 0, "SRT Sink"));
+
+static gboolean
+default_caller_connecting (GstSRTSink * self,
+    GSocketAddress * addr, const gchar * stream_id, gpointer data)
+{
+  /* Accept all connections. */
+  return TRUE;
+}
+
+static gboolean
+authentication_accumulator (GSignalInvocationHint * ihint,
+    GValue * return_accu, const GValue * handler_return, gpointer data)
+{
+  gboolean ret = g_value_get_boolean (handler_return);
+  /* Handlers return TRUE on authentication success and we want to stop on
+   * the first failure. */
+  g_value_set_boolean (return_accu, ret);
+  return ret;
+}
 
 static void
 gst_srt_sink_set_property (GObject * object,
@@ -274,6 +297,7 @@ gst_srt_sink_class_init (GstSRTSinkClass * klass)
   gobject_class->set_property = gst_srt_sink_set_property;
   gobject_class->get_property = gst_srt_sink_get_property;
   gobject_class->finalize = gst_srt_sink_finalize;
+  klass->caller_connecting = default_caller_connecting;
 
   /**
    * GstSRTSink::caller-added:
@@ -305,12 +329,37 @@ gst_srt_sink_class_init (GstSRTSinkClass * klass)
   /**
    * GstSRTSink::caller-rejected:
    * @gstsrtsink: the srtsink element that emitted this signal
+   * @addr: the #GSocketAddress that describes the client socket
+   * @stream_id: the stream Id to which the caller wants to connect
    *
    * A caller's connection to srtsink in listener mode has been rejected.
+   *
+   * Since: 1.20
+   *
    */
   signals[SIG_CALLER_REJECTED] =
       g_signal_new ("caller-rejected", G_TYPE_FROM_CLASS (klass),
-      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+      G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE,
+      2, G_TYPE_SOCKET_ADDRESS, G_TYPE_STRING);
+
+  /**
+   * GstSRTSink::caller-connecting:
+   * @gstsrtsink: the srtsink element that emitted this signal
+   * @addr: the #GSocketAddress that describes the client socket
+   * @stream_id: the stream Id to which the caller wants to connect
+   *
+   * Whether to accept or reject a caller's connection to srtsink in listener mode.
+   * The Caller's connection is rejected if the callback returns FALSE, else
+   * the connection is accepeted.
+   *
+   * Since: 1.20
+   *
+   */
+  signals[SIG_CALLER_CONNECTING] =
+      g_signal_new ("caller-connecting", G_TYPE_FROM_CLASS (klass),
+      G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET (GstSRTSinkClass, caller_connecting),
+      authentication_accumulator, NULL, NULL, G_TYPE_BOOLEAN,
+      2, G_TYPE_SOCKET_ADDRESS, G_TYPE_STRING);
 
   gst_srt_object_install_properties_helper (gobject_class);
 
@@ -326,7 +375,6 @@ gst_srt_sink_class_init (GstSRTSinkClass * klass)
   gstbasesink_class->unlock = GST_DEBUG_FUNCPTR (gst_srt_sink_unlock);
   gstbasesink_class->unlock_stop = GST_DEBUG_FUNCPTR (gst_srt_sink_unlock_stop);
   gstbasesink_class->set_caps = GST_DEBUG_FUNCPTR (gst_srt_sink_set_caps);
-
 }
 
 static GstURIType
